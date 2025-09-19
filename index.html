@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>余明璠 - Software Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* 流星背景動效 */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 2px;
+            background: linear-gradient(45deg, #fff, transparent);
+            border-radius: 50%;
+            animation: shoot 8s linear infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 頁首 */
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-bottom: 40px;
+            border-radius: 20px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: #333;
+            border: 4px solid rgba(255,255,255,0.3);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-img-placeholder {
+            font-size: 48px;
+        }
+
+        .name {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .title {
+            font-size: 1.5em;
+            opacity: 0.9;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        /* 區段 */
+        .section {
+            background: rgba(255,255,255,0.05);
+            margin: 30px 0;
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 0.8s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(103, 126, 234, 0.3);
+        }
+
+        .section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        /* 技能標籤 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            background: rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .skill-category h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.1);
+        }
+
+        /* 項目卡片 */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, rgba(103, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(103, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(103, 126, 234, 0.4);
+        }
+
+        .project-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .project-description {
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .project-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin-top: 10px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .project-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(103, 126, 234, 0.4);
+        }
+
+        .project-image {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 2px solid rgba(103, 126, 234, 0.3);
+        }
+
+        .tech-tag {
+            background: rgba(103, 126, 234, 0.2);
+            color: #667eea;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            border: 1px solid rgba(103, 126, 234, 0.3);
+        }
+        .education-item, .experience-item {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .education-item:hover, .experience-item:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateX(10px);
+        }
+
+        .item-title {
+            font-size: 1.2em;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .item-subtitle {
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        /* 動畫 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .name {
+                font-size: 2em;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <!-- 頁首 -->
+        <header class="header">
+            <div class="profile-img">
+                <!-- 上傳照片到 GitHub 後，將下面的 me.jpg 改成正確路徑 -->
+                <img src="me.jpg" alt="余明璠" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="profile-img-placeholder" style="display: none;">👨‍💻</div>
+            </div>
+            <h1 class="name">余明璠</h1>
+            <p class="title">Software Engineer</p>
+            <div class="contact-info">
+                <div class="contact-item">📞 0922224504</div>
+                <div class="contact-item">📧 minfan0510@gmail.com</div>
+                <div class="contact-item">📍 台北市文山區</div>
+            </div>
+        </header>
+
+        <!-- 關於我 -->
+        <section class="section">
+            <h2>關於我</h2>
+            <p>我是一個活潑開朗、善於溝通與團隊合作的軟體工程師，具有強大的抗壓能力，對工作非常認真負責。擁有國立清華大學資訊工程學系學士學位，具備扎實的程式設計基礎和豐富的項目開發經驗。</p>
+        </section>
+
+        <!-- 技能 -->
+        <section class="section">
+            <h2>專業技能</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>程式語言</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">C</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">TSX</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>專業領域</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Machine Learning</span>
+                        <span class="skill-tag">Data Science</span>
+                        <span class="skill-tag">Full Stack Development</span>
+                        <span class="skill-tag">System Programming</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>硬體設計</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Verilog</span>
+                        <span class="skill-tag">FPGA</span>
+                        <span class="skill-tag">Logic Design</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 數理能力 -->
+        <section class="section">
+            <h2>數理能力與競賽成績</h2>
+            <div class="math-achievements">
+                <div class="achievement-item">
+                    <div class="achievement-header">
+                        <h3 class="achievement-title">🏆 國際運算思維挑戰賽 PR99</h3>
+                        <span class="achievement-year">2016年</span>
+                    </div>
+                    <p class="achievement-description">參加國際運算思維挑戰賽九、十年級組，獲得 288/300 分，全國排名前 1%（PR99）的優異成績，展現卓越的邏輯思維與問題解決能力。</p>
+                    <div class="certificate-container">
+                        <button class="certificate-btn" onclick="toggleCertificate()">📜 查看證書</button>
+                        <div id="certificate-modal" class="certificate-modal" style="display: none;">
+                            <div class="certificate-content">
+                                <span class="close-btn" onclick="toggleCertificate()">&times;</span>
+                                <div class="certificate-info">
+                                    <h4 style="color: #333; margin-bottom: 15px;">國際運算思維挑戰賽證書</h4>
+                                    <div class="certificate-details" style="color: #666; line-height: 1.6;">
+                                        <p><strong>參賽者：</strong>余明璠（學號：510115）</p>
+                                        <p><strong>比賽年份：</strong>2016年</p>
+                                        <p><strong>參賽組別：</strong>九、十年級組</p>
+                                        <p><strong>成績：</strong>288/300 分</p>
+                                        <p><strong>全國排名：</strong>PR99（前1%）</p>
+                                        <p><strong>學校：</strong>台北市國立政大附中</p>
+                                    </div>
+                                    <div class="certificate-note" style="margin-top: 20px; padding: 15px; background: #f0f8ff; border-radius: 8px; color: #333;">
+                                        <p><strong>關於此競賽：</strong></p>
+                                        <p>國際運算思維挑戰賽（International Challenge on Informatics and Computational Thinking）旨在培養學生的邏輯思維、演算法設計和問題解決能力。PR99的成績表示在全國參賽者中排名前1%，展現了卓越的運算思維能力。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="achievement-item">
+                    <div class="achievement-header">
+                        <h3 class="achievement-title">📊 學測數學滿級分</h3>
+                        <span class="achievement-year">高中</span>
+                    </div>
+                    <p class="achievement-description">在學科能力測驗數學科目中獲得滿級分（100分），展現紮實的數學基礎與優秀的邏輯推理能力。</p>
+                </div>
+            </div>
+        </section>
+        <!-- 項目經驗 -->
+        <section class="section">
+            <h2>項目經驗</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3 class="project-title">🏓 桌球動作偵測系統</h3>
+                    <!-- 添加項目圖片 -->
+                    <img src="table-tennis-project.jpg" alt="桌球偵測系統" class="project-image" style="display: none;" onerror="this.style.display='none';">
+                    <p class="project-description">開發機器學習模型，用於偵測廣播視角桌球影片中的動作區間，目的是判定球的落點位置。</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Machine Learning</span>
+                        <span class="tech-tag">Computer Vision</span>
+                        <span class="tech-tag">Python</span>
+                    </div>
+                    <!-- 添加項目連結 -->
+                    <a href="https://docs.google.com/presentation/d/1riJ0nKOcIeGnd3ftahQyF_y1YrAXmjW4/edit?usp=sharing&ouid=117429635520738478045&rtpof=true&sd=true" class="project-link" target="_blank">🔗 查看專案</a>
+                </div>
+                
+                <div class="project-card">
+                    <h3 class="project-title">💻 自製社群媒體平台</h3>
+                    <!-- 添加項目圖片 -->
+                    <img src="social-media-project.jpg" alt="社群媒體平台" class="project-image" style="display: none;" onerror="this.style.display='none';">
+                    <p class="project-description">從零開始建構完整的社群媒體平台，包含前後端開發、資料庫設計和用戶介面設計。</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Full Stack</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Database Design</span>
+                    </div>
+                    <!-- 添加項目連結 -->
+                    <a href="https://github.com/minfan-Yu/merged_mute.git" class="project-link" target="_blank">🔗 查看程式碼</a>
+                    <a href="https://merged-mute.vercel.app/" class="project-link" target="_blank">🌐 線上體驗</a>
+                </div>
+                
+                <div class="project-card">
+                    <h3 class="project-title">❤️ 心電生理模擬系統 (VMAP)</h3>
+                    <!-- 添加項目圖片 -->
+                    <img src="vmap-project.jpg" alt="VMAP系統" class="project-image" style="display: none;" onerror="this.style.display='none';">
+                    <p class="project-description">在 Precise B.D. 實習期間開發的心電生理模擬系統，使用標準12導程心電圖數據和模擬心臟生成心電圖映射，協助臨床醫生定位心律不整源頭。</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Medical Technology</span>
+                        <span class="tech-tag">ECG Analysis</span>
+                        <span class="tech-tag">Simulation</span>
+                    </div>
+                    <!-- 添加項目連結 -->
+                    <a href="https://precisionthera.com/" class="project-link" target="_blank">🏥 公司網頁</a>
+                </div>
+                
+                <div class="project-card">
+                    <h3 class="project-title">🎮 遊戲程式設計</h3>
+                    <!-- 添加項目圖片 -->
+                    <img src="game-project.jpg" alt="遊戲專案" class="project-image" style="display: none;" onerror="this.style.display='none';">
+                    <p class="project-description">設計並實作互動式遊戲，展現程式設計與創意思考能力。</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Game Development</span>
+                        <span class="tech-tag">Interactive Design</span>
+                        <span class="tech-tag">Programming</span>
+                    </div>
+                    <!-- 添加項目連結 -->
+                    <a href="https://github.com/minfan-Yu/Intro2GameProgramming-Final.git" class="project-link" target="_blank">🔗 查看程式碼</a>
+                    <a href="https://drive.google.com/file/d/1nfDaUS1kZF1tpt-hgIyVEvqWTg2xWnAI/view?usp=sharing" class="project-link" target="_blank">🎮 遊戲畫面</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 教育背景 -->
+        <section class="section">
+            <h2>教育背景</h2>
+            <div class="education-item">
+                <div class="item-title">國立清華大學</div>
+                <div class="item-subtitle">資訊工程學系 學士</div>
+                <p>在學期間培養了扎實的程式設計基礎，學習了資料結構、作業系統概念、編譯器設計等核心課程。</p>
+            </div>
+        </section>
+
+        <!-- 工作經驗 -->
+        <section class="section">
+            <h2>工作經驗</h2>
+            <div class="experience-item">
+                <div class="item-title">Precise B.D. 實習生</div>
+                <div class="item-subtitle">6個月實習經驗</div>
+                <p>參與心電生理(EP)模擬系統開發，負責VMAP系統的程式開發工作，這是一個非侵入式映射工具，使用標準12導程心電圖數據協助臨床診斷。實習心得整理
+在這次實習中，主管給予我們高度自主權，讓實習生自行完成專案。過程中，我不僅培養了獨立蒐集資料與探索可行方法的能力，還接觸並熟悉多種醫學建模軟體，如 openCARP、Chaste 等。
+同時，我也深入了解心臟電訊號的傳導路徑與相關理論，對心臟電生理模擬有了更全面的認識。</p>
+            </div>
+        </section>
+        <!-- 自傳 -->
+        <section class="section">
+            <h2>自傳</h2>
+                <p>在清華大學資訊工程學系的學習經歷，讓我深刻體會到團隊合作與自我成長的重要性。在 Data Science 課程中，我們雖然競爭著提升模型效能，但同時也彼此扶持；在 Machine Learning 專案中，則學會了分工協作與整合不同觀點。
+
+在 遊戲程式設計課程 中，曾因缺乏協作經驗導致程式碼合併時出現超過 999 則 conflict，這讓我深刻理解到溝通與版本控制的重要性，並促使我養成主動協調、確保專案順利推進的習慣。
+
+課餘時間，我持續參與校籃球隊訓練並多次獲得盃賽冠軍，培養了自律、耐力與團隊精神。在合作過程中，我常提出創新想法，也樂於配合他人指揮，確保團隊發揮最大效益。</p>
+            </div>
+        </section>
+
+        <!-- 求職偏好 -->
+        <section class="section">
+            <h2>求職偏好</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>工作類型</h3>
+                    <p>全職工作</p>
+                </div>
+                <div class="skill-category">
+                    <h3>期望職位</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">軟體工程師</span>
+                        <span class="skill-tag">全端工程師</span>
+                        <span class="skill-tag">嵌入式系統工程師</span>
+                        <span class="skill-tag">AI工程師</span>
+                        <span class="skill-tag">資料工程師</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>工作地點</h3>
+                    <p>台北市、新北市、新竹縣市</p>
+                </div>
+                <div class="skill-category">
+                    <h3>可上班時間</h3>
+                    <p>錄取後可立即上班</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 創建星空效果
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            
+            // 創建靜態星星
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+            
+            // 創建流星
+            for (let i = 0; i < 3; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.left = Math.random() * -100 + 'px';
+                shootingStar.style.top = Math.random() * 50 + '%';
+                shootingStar.style.animationDelay = Math.random() * 8 + 's';
+                shootingStar.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                starsContainer.appendChild(shootingStar);
+            }
+        }
+
+        // 滾動動畫
+        function animateOnScroll() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach((section) => {
+                observer.observe(section);
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            animateOnScroll();
+        });
+
+        // 滑鼠移動視差效果
+        document.addEventListener('mousemove', function(e) {
+            const stars = document.querySelectorAll('.star');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            stars.forEach((star, index) => {
+                const speed = (index % 3 + 1) * 0.5;
+                star.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
